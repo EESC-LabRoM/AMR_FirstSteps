@@ -20,7 +20,7 @@ int main(int argc,char **argv ){
 	ros::Publisher pub_motorLeft  = node.advertise<std_msgs::Float32>("/vrep/vehicle/motorLeftSpeed",1);
         ros::Publisher pub_motorRight = node.advertise<std_msgs::Float32>("/vrep/vehicle/motorRightSpeed",1);
 	// Subscriber
-	ros::Subscriber sub_twist = node.subscribe("/amr/twist",1,twistCallback);
+	ros::Subscriber sub_twist = node.subscribe("/amr/cmd_vel",1,twistCallback);
 
 	// Loop rate
 	ros::Rate loop_rate(60);
