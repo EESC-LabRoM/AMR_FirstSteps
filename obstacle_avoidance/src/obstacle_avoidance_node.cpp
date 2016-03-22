@@ -17,86 +17,30 @@ geometry_msgs::Twist think_math() {
   // local variables
   double v = 1.5;
   double w = 0;
+  double d_side = (glRSonar - glLSonar) / SONAR_MAX;
   geometry_msgs::Twist returnTwist;
-  double kw = 15, kv = 1.2;
+  double kw = 2.5, kv = 1.5;
+  bool leftFree = (glLSonar == 0); 
+  bool rightFree = (glRSonar == 0);
+  bool frontFree = (glFSonar == 0);
   
-  // ===== logic =====
-  // ----- local variables -----
-  double d_side = glRSonar - glLSonar;
-  // ----- alert -----
-  if (d_side != 0 )
-  {
-    if(std::abs(d_side) < 0.2) {
-        glAlert.data = 2;
-    }
-    else if(std::abs(d_side) < 0.35 && glFSonar != 0 && glFSonar < 0.35) {
-        glAlert.data = 1;
-    } 
-    else {
-        glAlert.data = 0;
-    }      
-  }
-  // ----- v -----
-  v = kv * (1 - glFSonar/SONAR_MAX);
-  if(glFSonar != 0 && glFSonar < 0.22) {
-    v *= -1;
-    glAlert.data = 2;
-    }  
-    else if(glFSonar != 0 && glFSonar < 0.4) {
-    v *= 0.5;
-    glAlert.data = 1;
-    }
-  // ----- w -----
-  if(d_side != 0 && std::abs(d_side) < 0.3) {
-    v *= -1;
-    w = kw * ((d_side) / SONAR_MAX);
-    glAlert.data = 1;
+  glAlert.data = (leftFree && rightFree && frontFree) ? 0 : 2;
+  
+  if(leftFree && rightFree) {
+    v = kv;
+    w = 0;
+  } else {
+    w = kw * d_side;
   }
   
-  // return
-  returnTwist.linear.x = v;
-  returnTwist.angular.z = w;
-  return returnTwist;
-}
-
-geometry_msgs::Twist think_mathNew() {
-  // local variables
-  double v = 1.5;
-  double w = 0;
-  geometry_msgs::Twist returnTwist;
-  double kw = 15, kv = 1.2;
-  
-  // ===== logic =====
-  // ----- local variables -----
-  double d_side = glRSonar - glLSonar;
-  // ----- alert -----
-  if (d_side != 0 )
-  {
-    if(std::abs(d_side) < 0.2) {
-        glAlert.data = 2;
+  double d_front = (glFSonar/SONAR_MAX);
+  if(!frontFree) {
+    v = 0;
+    w = (d_side > 0) ? kw * (1 - d_front) : -kw * (1 - d_front);
+    if(d_front < 0.4) {
+      v = -kv;
+      w = (d_side < 0) ? kw * (1 - d_front) : -kw * (1 - d_front);
     }
-    else if(std::abs(d_side) < 0.35 && glFSonar != 0 && glFSonar < 0.35) {
-        glAlert.data = 1;
-    } 
-    else {
-        glAlert.data = 0;
-    }      
-  }
-  // ----- v -----
-  v = kv * (1 - glFSonar/SONAR_MAX);
-  if(glFSonar != 0 && glFSonar < 0.22) {
-    v *= -1;
-    glAlert.data = 2;
-    }  
-    else if(glFSonar != 0 && glFSonar < 0.4) {
-    v *= 0.5;
-    glAlert.data = 1;
-    }
-  // ----- w -----
-  if(d_side != 0 && std::abs(d_side) < 0.3) {
-    v *= -1;
-    w = kw * ((d_side) / SONAR_MAX);
-    glAlert.data = 1;
   }
   
   // return
