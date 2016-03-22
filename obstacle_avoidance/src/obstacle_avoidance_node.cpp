@@ -71,10 +71,10 @@ geometry_msgs::Twist think_math() {
   // ----- local variables -----
   double d_side = glRSonar - glLSonar;
   // ----- alert -----
-  if(std::abs(d_side) < 0.3 && glFSonar < 0.3) {
+  if(d_side != 0 && std::abs(d_side) < 0.2 && glFSonar != 0 && glFSonar < 0.2) {
     glAlert.data = 2;
   }
-  else if(std::abs(d_side) < 0.5 && glFSonar < 0.5) {
+  else if(d_side != 0 && std::abs(d_side) < 0.35 && glFSonar != 0 && glFSonar < 0.35) {
     glAlert.data = 1;
   } else {
     glAlert.data = 0;
@@ -83,10 +83,17 @@ geometry_msgs::Twist think_math() {
   v = kv * (1 - glFSonar/SONAR_MAX);
   if(glFSonar != 0 && glFSonar < 0.22) {
     v *= -1;
-  }
+    glAlert.data = 2;
+    }  
+    else if(glFSonar != 0 && glFSonar < 0.4) {
+    v *= 0.5;
+    glAlert.data = 1;
+    }
   // ----- w -----
   if(d_side != 0 && std::abs(d_side) < 0.3) {
+    v *= -1;
     w = kw * ((d_side) / SONAR_MAX);
+    glAlert.data = 1;
   }
   
   // return

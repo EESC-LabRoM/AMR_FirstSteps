@@ -1,5 +1,7 @@
 <launch>
-  <node name="amr_manager" pkg="twist_commander" type="manager_node" />
+  <node name="amr_manager" pkg="twist_commander" type="manager_node" output="screen" />
   <node name="amr_obstacle_avoidance" pkg="obstacle_avoidance" type="obstacle_avoidance_node" />
   <node name="amr_carrot_chasing" pkg="carrot_chasing" type="carrot_chasing_node" />
+  <node name="amr_waypoints" pkg="way_points" type="waypoints" />
+  <node name="amr_kine_controller" pkg="kinect_controller" type="kinect_controller_node" />
 </launch>
