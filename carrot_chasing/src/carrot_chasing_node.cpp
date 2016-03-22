@@ -106,8 +106,8 @@ int main(int argc, char** argv)
     ros::Subscriber sub_wf = node.subscribe("/amr/waypoints_f",1,wfCallback);
     
 	//Publisher
-	//ros::Publisher pub_twist = node.advertise<geometry_msgs::Twist>("/amr/carrot/twist",1); 
-    pub_twist = node.advertise<geometry_msgs::Twist>("/amr/twist",1); 
+	pub_twist = node.advertise<geometry_msgs::Twist>("/amr/carrot/twist",1); 
+    //pub_twist = node.advertise<geometry_msgs::Twist>("/amr/twist",1); 
             
     ros::spin();
 	return 0;

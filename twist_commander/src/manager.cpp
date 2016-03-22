@@ -11,7 +11,7 @@ ros::Publisher pub_twist;
 // Twist messages
 geometry_msgs::Twist obstacle_twist, carrot_twist;
 // Obstacle warn gain factor. The greater this gain, the more the robot believes in the obstacle detector
-double k_warn = 0.5;   
+double k_warn = 1;   
 
 void emergencyCallback(const std_msgs::Int32::ConstPtr &msg)
 {
@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     // Start subscribers
     ros::Subscriber sub_obstacle = node.subscribe("/amr/obstacle/twist", 1, obstacleCallback);
     ros::Subscriber sub_carrot   = node.subscribe("/amr/carrot/twist"  , 1,   carrotCallback);
-    ros::Subscriber sub_emergency   = node.subscribe("/amr/obstacle/emergency"  , 1,   emergencyCallback);
+    ros::Subscriber sub_emergency   = node.subscribe("/amr/obstacle/alert"  , 1,   emergencyCallback);
     // Start publishers
     pub_twist     = node.advertise<geometry_msgs::Twist>("/amr/cmd_vel",1);
     
