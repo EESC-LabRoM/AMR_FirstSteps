@@ -26,7 +26,7 @@ int main( int argc, char **argv)
   ros::Publisher pubLMotor = node.advertise<std_msgs::Float32>("/vrep/vehicle/motorLeftSpeed" , 1);
   
   // Subscribers
-  ros::Subscriber s = node.subscribe("/sonarController",1, callback);
+  ros::Subscriber s = node.subscribe("/amr/twist",1, callback);
   
   ros::Rate loopRate(20);
   
