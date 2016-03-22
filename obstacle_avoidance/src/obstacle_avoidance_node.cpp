@@ -68,7 +68,13 @@ geometry_msgs::Twist think_math() {
   
   // logic
   v = kv * (1 - glFSonar/SONAR_MAX);
-  w = kw * ((glRSonar - glLSonar) / SONAR_MAX);
+  if(glFSonar != 0 && glFSonar < 0.18) {
+    v *= -1;
+  }
+  double d_side = glRSonar - glLSonar;
+  if(d_side < 0.5) {
+    w = kw * ((d_side) / SONAR_MAX);
+  }
   
   // return
   returnTwist.linear.x = v;
