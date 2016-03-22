@@ -2,6 +2,7 @@
 #include <std_msgs/Int32.h>
 #include <std_msgs/Float32.h>
 #include <geometry_msgs/Twist.h>
+#include <math.h>
 
 #define SONAR_MAX 0.65
 
@@ -64,15 +65,27 @@ geometry_msgs::Twist think_math() {
   double v = 1.5;
   double w = 0;
   geometry_msgs::Twist returnTwist;
-  double kw = 1.5, kv = 1.5;
+  double kw = 1.5, kv = 1.2;
   
-  // logic
+  // ===== logic =====
+  // ----- local variables -----
+  double d_side = glRSonar - glLSonar;
+  // ----- alert -----
+  if(std::abs(d_side) < 0.3 && glFSonar < 0.3) {
+    glAlert.data = 2;
+  }
+  else if(std::abs(d_side) < 0.5 && glFSonar < 0.5) {
+    glAlert.data = 1;
+  } else {
+    glAlert.data = 0;
+  }
+  // ----- v -----
   v = kv * (1 - glFSonar/SONAR_MAX);
-  if(glFSonar != 0 && glFSonar < 0.18) {
+  if(glFSonar != 0 && glFSonar < 0.22) {
     v *= -1;
   }
-  double d_side = glRSonar - glLSonar;
-  if(d_side < 0.5) {
+  // ----- w -----
+  if(d_side != 0 && std::abs(d_side) < 0.3) {
     w = kw * ((d_side) / SONAR_MAX);
   }
   
@@ -109,8 +122,8 @@ int main( int argc, char **argv) {
   ros::NodeHandle node;
   
   // Publishers
-  // ros::Publisher pubTwist = node.advertise<geometry_msgs::Twist>("/amr/obstacle/twist", 1);
-  ros::Publisher pubTwist = node.advertise<geometry_msgs::Twist>("/amr/twist", 1);
+  ros::Publisher pubTwist = node.advertise<geometry_msgs::Twist>("/amr/obstacle/twist", 1);
+  // ros::Publisher pubTwist = node.advertise<geometry_msgs::Twist>("/amr/twist", 1);
   ros::Publisher pubAlert = node.advertise<std_msgs::Int32>("/amr/obstacle/alert", 1);
   
   // Subscribers
@@ -132,5 +145,5 @@ int main( int argc, char **argv) {
     ros::spinOnce();
     loopRate.sleep();
   }
-   
-} 
+}
+
