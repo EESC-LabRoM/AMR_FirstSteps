@@ -6,13 +6,15 @@
 #include <cmath>
 
 #define MAX_V 1.5
-#define MAX_W 1.5
+#define MAX_W 10
+#define MAX_CROSS_ERROR_DISTANCE 1
+#define TRAJECTORY_WIDTH 0.1
 
 double x, y, yaw;
 double WiX = 4,WiY = 1.5, WfX = -3, WfY = 1.5;
 ros::Publisher pub_twist;
     
-double w = 0, v = 0.5, sigma = 0.7, K = 1; 
+double w = 0, v = 0.5, sigma = 0.7, K = 3; 
 
 double normalizeAngle(double angle)
 {
@@ -23,8 +25,11 @@ double normalizeAngle(double angle)
 
 void carrotChasing()
 {
-    double distance, Ru, theta, thetaU, beta, R, xc, yc, psiD, u, headingDiff;    
+    ROS_INFO("WI: %f %f",WiX,WiY);
+    ROS_INFO("WF: %f %f",WfX,WfY);
+    double distance, Ru, theta, thetaU, beta, R, xc, yc, psiD, u, headingDiff, crossErrorDistance;    
     geometry_msgs::Twist Twist_msg;  
+    
     //2
     Ru = sqrt(pow(WiX-x,2) + pow(WiY-y,2));
     theta = atan2(WfY-WiY,WfX-WiX);
@@ -32,7 +37,8 @@ void carrotChasing()
     thetaU = atan2((y - WiY),x - WiX);
     beta  = theta - thetaU;
     //4
-    R = sqrt(pow(Ru,2) - pow(Ru*sin(beta),2));
+    crossErrorDistance = Ru*sin(beta);
+    R = sqrt(pow(Ru,2) - pow(crossErrorDistance,2));
     //5
     xc = (R+sigma)*cos(theta) + WiX;
     yc = (R+sigma)*sin(theta) + WiY;
@@ -41,8 +47,22 @@ void carrotChasing()
     headingDiff = normalizeAngle(psiD- yaw);    
 
     u = K*headingDiff;
-    //if (std::abs(u) > MAX_W)
-    
+    if (std::abs(u) > MAX_W)
+    {
+        u = MAX_W*std::abs(u)/u;
+    }
+    v = MAX_V;
+    /*    
+    if (crossErrorDistance > MAX_CROSS_ERROR_DISTANCE) 
+    {
+        v = MAX_V;        
+    }else if (crossErrorDistance > TRAJECTORY_WIDTH) 
+    {
+        v = 0.5;
+    }
+    else{
+        v = MAX_V;
+    }*/
     
     //Stop criteria based on distance to target point
     distance = sqrt(pow(WfX-x,2) + pow(WfY-y,2));
