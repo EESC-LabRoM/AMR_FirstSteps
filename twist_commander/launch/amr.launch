@@ -1,0 +1,5 @@
+<launch>
+  <node name="amr_manager" pkg="twist_commander" type="manager_node" />
+  <node name="amr_obstacle_avoidance" pkg="obstacle_avoidance" type="obstacle_avoidance_node" />
+  <node name="amr_carrot_chasing" pkg="carrot_chasing" type="carrot_chasing_node" />
+</launch>
