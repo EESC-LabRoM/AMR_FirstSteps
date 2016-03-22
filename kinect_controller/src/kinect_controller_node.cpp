@@ -13,7 +13,7 @@ void twistCallback(const geometry_msgs::TwistConstPtr &msg ){
 
 int main(int argc,char **argv ){
 	// Initialize ROS machine
-	ros::init(argc,argv,"kine_controller");
+	ros::init(argc,argv,"amr_kine_controller");
 	// Node
 	ros::NodeHandle node;
 	// Publisher

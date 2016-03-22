@@ -16,7 +16,7 @@ double WiX = 4,WiY = 1.5, WfX = -3, WfY = 1.5;
 ros::Publisher pub_twist;
 ros::Publisher pub_percentage;
     
-double w = 0, v = 0.5, sigma = 0.7, K = 3.2; 
+double w = 0, v = 0.5, sigma = 1, K = 3; 
 
 double normalizeAngle(double angle)
 {

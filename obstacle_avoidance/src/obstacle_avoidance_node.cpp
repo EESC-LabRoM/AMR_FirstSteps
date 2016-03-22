@@ -15,91 +15,47 @@ double glPercentage = 0;
 
 geometry_msgs::Twist think_math() {
   // local variables
-  double v = 1.5;
+  double v = -0.1;
   double w = 0;
   geometry_msgs::Twist returnTwist;
-  double kw = 15, kv = 1.2;
-  
-  // ===== logic =====
-  // ----- local variables -----
-  double d_side = glRSonar - glLSonar;
-  // ----- alert -----
-  if (d_side != 0 )
+  double kw = 2, kv = 1;
+ glAlert.data = 0;
+    // ===== logic =====
+  if (glRSonar > 0 && glLSonar > 0) // detected something on my right
   {
-    if(std::abs(d_side) < 0.2) {
-        glAlert.data = 2;
-    }
-    else if(std::abs(d_side) < 0.35 && glFSonar != 0 && glFSonar < 0.35) {
-        glAlert.data = 1;
-    } 
-    else {
-        glAlert.data = 0;
-    }      
+        double d_side = glRSonar - glLSonar;
+        w = kw * (d_side);
+        if (std::abs(d_side) > 0.3){               
+            glAlert.data = 2;
+        } else {
+            glAlert.data = 1;
+        }
+  } else if (glRSonar > 0 ){
+        w =  kw * (SONAR_MAX - glRSonar);
+        if (std::abs(glRSonar) < 0.3){
+            glAlert.data = 2;
+        } else {
+             w *= 2;
+            glAlert.data = 1;
+        }
+        
+ } else if (glLSonar > 0 ){
+        w = - 1.5 * kw * (SONAR_MAX - glLSonar);
+        if (std::abs(glLSonar) < 0.3){
+            glAlert.data = 2;
+        } else {
+            w *= 2;
+            glAlert.data = 1;
+        }
   }
-  // ----- v -----
-  v = kv * (1 - glFSonar/SONAR_MAX);
-  if(glFSonar != 0 && glFSonar < 0.22) {
-    v *= -1;
-    glAlert.data = 2;
-    }  
-    else if(glFSonar != 0 && glFSonar < 0.4) {
-    v *= 0.5;
-    glAlert.data = 1;
-    }
-  // ----- w -----
-  if(d_side != 0 && std::abs(d_side) < 0.3) {
-    v *= -1;
-    w = kw * ((d_side) / SONAR_MAX);
-    glAlert.data = 1;
-  }
-  
-  // return
-  returnTwist.linear.x = v;
-  returnTwist.angular.z = w;
-  return returnTwist;
-}
+    
 
-geometry_msgs::Twist think_mathNew() {
-  // local variables
-  double v = 1.5;
-  double w = 0;
-  geometry_msgs::Twist returnTwist;
-  double kw = 15, kv = 1.2;
   
-  // ===== logic =====
-  // ----- local variables -----
-  double d_side = glRSonar - glLSonar;
-  // ----- alert -----
-  if (d_side != 0 )
-  {
-    if(std::abs(d_side) < 0.2) {
-        glAlert.data = 2;
-    }
-    else if(std::abs(d_side) < 0.35 && glFSonar != 0 && glFSonar < 0.35) {
-        glAlert.data = 1;
-    } 
-    else {
-        glAlert.data = 0;
-    }      
-  }
-  // ----- v -----
-  v = kv * (1 - glFSonar/SONAR_MAX);
-  if(glFSonar != 0 && glFSonar < 0.22) {
-    v *= -1;
+  if (glFSonar > 0 && glFSonar < 0.3){
+    v = v - 0.5;
     glAlert.data = 2;
-    }  
-    else if(glFSonar != 0 && glFSonar < 0.4) {
-    v *= 0.5;
-    glAlert.data = 1;
-    }
-  // ----- w -----
-  if(d_side != 0 && std::abs(d_side) < 0.3) {
-    v *= -1;
-    w = kw * ((d_side) / SONAR_MAX);
-    glAlert.data = 1;
   }
-  
-  // return
+    // return
   returnTwist.linear.x = v;
   returnTwist.angular.z = w;
   return returnTwist;
