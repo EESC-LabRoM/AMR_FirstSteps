@@ -3,6 +3,7 @@
 #include "geometry_msgs/Point.h"
 #include "nav_msgs/Odometry.h"
 #include "tf/transform_datatypes.h"
+#include "std_msgs/Float64.h"
 #include <cmath>
 
 #define MAX_V 1.5
@@ -13,8 +14,9 @@
 double x, y, yaw;
 double WiX = 4,WiY = 1.5, WfX = -3, WfY = 1.5;
 ros::Publisher pub_twist;
+ros::Publisher pub_percentage;
     
-double w = 0, v = 0.5, sigma = 0.7, K = 3; 
+double w = 0, v = 0.5, sigma = 0.7, K = 3.2; 
 
 double normalizeAngle(double angle)
 {
@@ -22,13 +24,18 @@ double normalizeAngle(double angle)
         angle -= 2*M_PI*angle / std::abs(angle);   
     return angle;
 }
+double calcDistance(double x1, double x2, double y1, double y2)
+{
+    return sqrt(pow(x1-x2,2) + pow(y1-y2,2));
+}
 
 void carrotChasing()
 {
     ROS_INFO("WI: %f %f",WiX,WiY);
     ROS_INFO("WF: %f %f",WfX,WfY);
-    double distance, Ru, theta, thetaU, beta, R, xc, yc, psiD, u, headingDiff, crossErrorDistance;    
+    double distance, Ru, theta, thetaU, beta, R, xc, yc, psiD, u, headingDiff, crossErrorDistance, xq, yq, fullDistance;    
     geometry_msgs::Twist Twist_msg;  
+    std_msgs::Float64 percentage;
     
     //2
     Ru = sqrt(pow(WiX-x,2) + pow(WiY-y,2));
@@ -64,15 +71,15 @@ void carrotChasing()
         v = MAX_V;
     }*/
     
-    //Stop criteria based on distance to target point
-    distance = sqrt(pow(WfX-x,2) + pow(WfY-y,2));
-    if (distance < 0.1) v = 0;
-    
+    xq = (R)*cos(theta) + WiX;
+    yq = (R)*sin(theta) + WiY;
+    fullDistance = calcDistance(WiX,WfX,WiY,WfY);
     //Publishing angular and linear velocities
     Twist_msg.linear.x = v;
     Twist_msg.angular.z =  u;     
+    percentage.data = 1 - calcDistance(xq,WfX,yq,WfY)/fullDistance; 
     pub_twist.publish(Twist_msg);   
-    
+    pub_percentage.publish(percentage);
 }
 
 void odomCallback(const nav_msgs::Odometry::ConstPtr &msg)
@@ -107,6 +114,7 @@ int main(int argc, char** argv)
     
 	//Publisher
 	pub_twist = node.advertise<geometry_msgs::Twist>("/amr/carrot/twist",1); 
+	pub_percentage = node.advertise<std_msgs::Float64>("/amr/waypointComplete",1); 
     //pub_twist = node.advertise<geometry_msgs::Twist>("/amr/twist",1); 
             
     ros::spin();
