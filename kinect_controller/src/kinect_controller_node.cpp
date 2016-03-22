@@ -9,8 +9,7 @@ double carWidth = 0.35;
 void callback(const geometry_msgs::TwistConstPtr& vel)
 {               
   wR.data = (vel->linear.x)/carWidth + (vel->angular.z)/2;
-  wL.data = (vel->linear.x)/carWidth - (vel->angular.z)/2;
-       
+  wL.data = (vel->linear.x)/carWidth - (vel->angular.z)/2;  
 }
 
 int main( int argc, char **argv)
