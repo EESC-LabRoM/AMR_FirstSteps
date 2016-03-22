@@ -11,7 +11,6 @@
 
 
 ros::Publisher pub_wp_i, pub_wp_f;
-geometry_msgs::Point wp_i_msg, wp_f_msg;
 
 std::vector<geometry_msgs::Point> waypoints_i, waypoints_f;
 
@@ -41,33 +40,27 @@ void fillWaypoints()
 	return;    
 }
 
-void initWPAndPublishFirst()
+void initWPs()
 {
     wp_index = 0;
-    
-    wp_i_msg = waypoints_i[wp_index];
-    wp_f_msg = waypoints_f[wp_index];
-    
-    pub_wp_i.publish(wp_i_msg);
-    pub_wp_f.publish(wp_f_msg);
+
 }
 
 void odom_callback(const nav_msgs::OdometryConstPtr &odom_msg)
 {
+    std::cout << "received odom" << std::endl;
     geometry_msgs::Point pos = odom_msg->pose.pose.position;
     
     double distance = sqrt(pow(pos.x - waypoints_f[wp_index].x, 2) + pow(pos.y - waypoints_f[wp_index].y, 2));
 
-    if(distance < THRESHOLD)
+    if(distance <= THRESHOLD)
     {
         wp_index++;
-        
-        wp_i_msg = waypoints_i[wp_index];
-        wp_f_msg = waypoints_f[wp_index];
-        
-        pub_wp_i.publish(wp_i_msg);
-        pub_wp_f.publish(wp_f_msg);
     }
+    
+    std::cout << "publishing..." << std::endl;
+    pub_wp_i.publish(waypoints_i[wp_index]);
+    pub_wp_f.publish(waypoints_f[wp_index]);
 }
 
 
@@ -88,7 +81,7 @@ int main(int argc, char **argv)
     pub_wp_i = node.advertise<geometry_msgs::Point>("/amr/waypoints_i", 1);
     pub_wp_f = node.advertise<geometry_msgs::Point>("/amr/waypoints_f", 1);
     
-    initWPAndPublishFirst();
+    initWPs();
 	
 	ros::spin();
 }
