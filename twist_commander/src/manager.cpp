@@ -17,6 +17,8 @@ void emergencyCallback(const std_msgs::Int32::ConstPtr &msg)
 {
 
     geometry_msgs::Twist twist;
+    
+    ROS_INFO("emergency status: [%d]", msg->data);
 
     switch (msg->data){
             // No obstacle detected in the sensor grid
