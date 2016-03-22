@@ -11,7 +11,7 @@ ros::Publisher pub_twist;
 // Twist messages
 geometry_msgs::Twist obstacle_twist, carrot_twist;
 // Obstacle warn gain factor. The greater this gain, the more the robot believes in the obstacle detector
-double k_warn = 1;   
+double k_warn = 0.7;   
 
 void emergencyCallback(const std_msgs::Int32::ConstPtr &msg)
 {

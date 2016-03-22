@@ -3,7 +3,7 @@
 #include "geometry_msgs/Point.h"
 #include "nav_msgs/Odometry.h"
 #include "tf/transform_datatypes.h"
-#include "std_msgs/Float64.h"
+#include "std_msgs/Float32.h"
 #include <cmath>
 
 #define MAX_V 1.5
@@ -35,7 +35,7 @@ void carrotChasing()
     ROS_INFO("WF: %f %f",WfX,WfY);
     double distance, Ru, theta, thetaU, beta, R, xc, yc, psiD, u, headingDiff, crossErrorDistance, xq, yq, fullDistance;    
     geometry_msgs::Twist Twist_msg;  
-    std_msgs::Float64 percentage;
+    std_msgs::Float32 percentage;
     
     //2
     Ru = sqrt(pow(WiX-x,2) + pow(WiY-y,2));
@@ -114,7 +114,7 @@ int main(int argc, char** argv)
     
 	//Publisher
 	pub_twist = node.advertise<geometry_msgs::Twist>("/amr/carrot/twist",1); 
-	pub_percentage = node.advertise<std_msgs::Float64>("/amr/waypointComplete",1); 
+	pub_percentage = node.advertise<std_msgs::Float32>("/amr/percentageDone",1); 
     //pub_twist = node.advertise<geometry_msgs::Twist>("/amr/twist",1); 
             
     ros::spin();
