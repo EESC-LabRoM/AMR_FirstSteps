@@ -3,10 +3,11 @@
 **Summary**: This page presents a four-day intensive course  on Robot Operating System (ROS) for under-graduate and graduate students. Well-established tools, such as GitHub and the simulator V-REP, and theoretical concepts like navigation and obstacle avoidance algorithms are introduced in a just-in-time learning fashion. The last day of the course is dedicated to a racing competition with small wheeled robots, where all teams' vehicles share the same racing track in a simulated environment. Everything that is learned along the course is employed to successfully complete the laps as fast as possible. 
 ### **Important**: Feel free to contribute.
 ### Course Material:
- * [Slides](www.link.com) that support tools/theory introduction;
- * [Linux/ROS cheat table](www.link.com) summarized info for beginners. to be printed prior course kick-off;
- * [Source ccode](https://github.com/EESC-LabRoM/AMR_FirstSteps) github repository.
+ * [Slides](http://labrom.eesc.usp.br/amr_first_steps/material.pdf) that support tools/theory introduction;
+ * [Linux/ROS cheat table](http://labrom.eesc.usp.br/amr_first_steps/Printingnotes.pdf) summarized info for beginners. to be printed prior course kick-off;
+ * [Source code](https://github.com/EESC-LabRoM/AMR_FirstSteps) github repository.
+ * [V-REP:](https://github.com/EESC-LabRoM/robot-tutorial.zip) mobile robot tutorial. 
  
 ### Past editions
-**March 2016:** The 1st edition gathered Computer Science, Mechanic and Electric Engineering students at the University of São Paulo, in São Carlos. Participants adopted a constructive and enthusiastic attitude, as well as a strong endeavor in fulfilling the proposed tasks. [Click here](https://www.youtube.com/watch?v=LdlB8c6Z0XY) for the final competition video.
+**March 2016:** The 1st edition gathered Computer Science, Mechanic and Electric Engineering students at the University of São Paulo, in São Carlos. Participants adopted a constructive and enthusiastic attitude, as well as a strong endeavor in fulfilling the proposed tasks. [Click here](https://www.youtube.com/watch?v=LdlB8c6Z0XY) for the final competition video.	
 
