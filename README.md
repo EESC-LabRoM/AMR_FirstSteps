@@ -6,7 +6,8 @@
  * [Slides](http://labrom.eesc.usp.br/amr_first_steps/material.zip) that support tools/theory introduction;
  * [Linux/ROS cheat table](http://labrom.eesc.usp.br/amr_first_steps/Printingnotes.pdf) summarized info for beginners. to be printed prior course kick-off;
  * [Source code](https://github.com/EESC-LabRoM/AMR_FirstSteps) github repository. (You are here!)
- * [V-REP:](https://github.com/EESC-LabRoM/robot-tutorial.zip) mobile robot tutorial. 
+ * [V-REP:](https://labrom.eesc.usp.br/amr_first_steps/vrep-course.zip) V-REP course. 
+ * [V-REP:](https://labrom.eesc.usp.br/amr_first_steps/robot-tutorial.zip) mobile robot tutorial. 
  
 ### Past editions
 **March 2016:** The 1st edition gathered Computer Science, Mechanic and Electric Engineering students at the University of São Paulo, in São Carlos. Participants adopted a constructive and enthusiastic attitude, as well as a strong endeavor in fulfilling the proposed tasks. [Click here](https://www.youtube.com/watch?v=LdlB8c6Z0XY) for the final competition video.	
