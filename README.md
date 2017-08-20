@@ -1,6 +1,9 @@
 # Autonomous Mobile Robots: First Steps
 ### A mini-course on ROS for undergraduate and gradute beginners on robotics track.
 **Summary**: This page presents a four-day intensive course  on Robot Operating System (ROS) for under-graduate and graduate students. Well-established tools, such as GitHub and the simulator V-REP, and theoretical concepts like navigation and obstacle avoidance algorithms are introduced in a just-in-time learning fashion. The last day of the course is dedicated to a racing competition with small wheeled robots, where all teams' vehicles share the same racing track in a simulated environment. Everything that is learned along the course is employed to successfully complete the laps as fast as possible. 
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=LdlB8c6Z0XY)
+
 ### **Important**: Feel free to contribute.
 ### [Course Material](http://labrom.eesc.usp.br/amr_first_steps/):
  * [Slides](http://labrom.eesc.usp.br/amr_first_steps/material.zip) that support tools/theory introduction;
